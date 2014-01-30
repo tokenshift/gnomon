@@ -24,14 +24,16 @@
 
 (defn- handle-events
   [watcher callback]
-  (loop []
-    (let [event-key (.take watcher)]
-      (doseq [event (.pollEvents event-key)]
-        (callback (event-kind-mapping (.kind event))
-                  (path-to-file (.watchable event-key) (.context event))))
-      (if (.reset event-key)
-        (recur)
-        (callback :error "Could not reset event registration; check folder permissions.")))))
+  (try
+    (loop []
+      (let [event-key (.take watcher)]
+        (doseq [event (.pollEvents event-key)]
+          (callback (event-kind-mapping (.kind event))
+                    (path-to-file (.watchable event-key) (.context event))))
+        (if (.reset event-key)
+          (recur)
+          (callback :error "Could not reset event registration; check folder permissions."))))
+    (catch java.lang.IllegalMonitorStateException e)))
 
 (defn watch
   [callback & paths]
