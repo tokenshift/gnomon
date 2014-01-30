@@ -1,4 +1,4 @@
-(defproject gnomon "0.1-SNAPSHOT"
+(defproject gnomon "0.1.0"
   :description "A Clojure wrapper around the Java filesystem WatchService."
   :url "https://github.com/tokenshift/gnomon"
   :license {:name "The MIT License"
