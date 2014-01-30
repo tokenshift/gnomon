@@ -41,4 +41,5 @@
         watcher (.newWatchService filesystem)
         paths (map #(Paths/get % (into-array String [])) paths)]
     (doseq [path paths] (.register path watcher (into-array (vals event-kinds))))
-    (handle-events watcher callback)))
+    (future (handle-events watcher callback)))
+  nil)
